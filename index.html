@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💕 Un Mensaje Especial Para Ti</title>
+
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body,#root{width:100%;height:100%;overflow:hidden}
+
+body{
+    font-family:'Quicksand',sans-serif;
+    background:linear-gradient(135deg,#ff9a9e,#fad0c4,#ffd1ff);
+    position:relative;
+}
+
+/* Estrellas brillantes de fondo */
+.stars-bg{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:0;
+}
+
+.star{
+    position:absolute;
+    width:3px;
+    height:3px;
+    background:white;
+    border-radius:50%;
+    box-shadow:0 0 4px white;
+    opacity:0;
+    animation:twinkle 3s ease-in-out infinite;
+}
+
+@keyframes twinkle{
+    0%, 100%{opacity:0;transform:scale(1)}
+    50%{opacity:0.9;transform:scale(1.5)}
+}
+
+/* Corazones de fondo mejorados con pulso */
+.heart-bg{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:0;
+}
+.heart{
+    position:absolute;
+    font-size:24px;
+    opacity:.6;
+    animation:floatHeart 12s linear infinite, pulseHeart 1.5s ease-in-out infinite;
+}
+@keyframes floatHeart{
+    from{transform:translateY(100vh) scale(.8);opacity:0}
+    to{transform:translateY(-20vh) scale(1.2);opacity:.8}
+}
+@keyframes pulseHeart{
+    0%, 100%{transform:scale(1)}
+    50%{transform:scale(1.15)}
+}
+
+.story-container{
+    width:100%;
+    height:100%;
+    position:relative;
+    z-index:1;
+}
+
+.scene{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:30px;
+    opacity:0;
+    transform:translateY(30px);
+    transition:opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.scene.active{opacity:1;transform:translateY(0)}
+
+.character-container{
+    position:relative;
+    width:180px;
+    margin-bottom:30px;
+}
+
+.character{
+    width:100%;
+}
+
+/* Animación de respiración suave */
+.character.breathing{
+    animation:breathe 3.5s ease-in-out infinite;
+}
+
+@keyframes breathe{
+    0%, 100%{transform:translateY(0) scale(1)}
+    50%{transform:translateY(-10px) scale(1.02)}
+}
+
+/* Animación de celebración enérgica */
+.character.celebrating{
+    animation:celebrate 0.5s ease-in-out infinite;
+}
+
+@keyframes celebrate{
+    0%, 100%{transform:translateY(0) rotate(0deg) scale(1)}
+    25%{transform:translateY(-20px) rotate(-8deg) scale(1.05)}
+    75%{transform:translateY(-20px) rotate(8deg) scale(1.05)}
+}
+
+/* Arco y flecha de Cupido */
+.cupid-bow{
+    position:absolute;
+    top:50%;
+    right:-40px;
+    transform:translateY(-50%) rotate(-45deg);
+    font-size:40px;
+    opacity:0;
+    animation:showBow 0.6s ease-out 0.3s forwards;
+}
+
+@keyframes showBow{
+    from{opacity:0;transform:translateY(-50%) rotate(-45deg) translateX(-20px)}
+    to{opacity:1;transform:translateY(-50%) rotate(-45deg) translateX(0)}
+}
+
+/* Confeti mejorado con más variedad */
+.confetti-container{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:100;
+}
+
+.confetti{
+    position:absolute;
+    width:10px;
+    height:10px;
+    top:-10px;
+    opacity:0;
+}
+
+.confetti.active{
+    animation:confettiFall 3s linear forwards;
+}
+
+@keyframes confettiFall{
+    0%{
+        transform:translateY(0) rotate(0deg);
+        opacity:1;
+    }
+    100%{
+        transform:translateY(110vh) rotate(720deg);
+        opacity:0;
+    }
+}
+
+/* Corazones flotantes saliendo de Cupido */
+.floating-hearts{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    z-index:99;
+}
+
+.floating-heart{
+    position:absolute;
+    font-size:35px;
+    opacity:0;
+    left:50%;
+    top:50%;
+}
+
+.floating-heart.active{
+    animation:floatUp 2.5s ease-out forwards;
+}
+
+@keyframes floatUp{
+    0%{
+        transform:translate(-50%, -50%) translateY(0) scale(0.3) rotate(0deg);
+        opacity:1;
+    }
+    100%{
+        transform:translate(-50%, -50%) translateY(-250px) scale(1.8) rotate(360deg);
+        opacity:0;
+    }
+}
+
+/* Rayos de furia */
+.lightning-container{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    z-index:100;
+}
+
+.lightning{
+    position:absolute;
+    font-size:45px;
+    opacity:0;
+}
+
+.lightning.active{
+    animation:lightningStrike 0.7s ease-out forwards;
+}
+
+@keyframes lightningStrike{
+    0%{
+        transform:translateY(-60px) scale(0.4) rotate(-20deg);
+        opacity:0;
+    }
+    15%{
+        opacity:1;
+    }
+    100%{
+        transform:translateY(120px) scale(1.6) rotate(20deg);
+        opacity:0;
+    }
+}
+
+/* Humo oscuro */
+.smoke{
+    position:absolute;
+    font-size:40px;
+    opacity:0;
+    filter:blur(2px);
+}
+
+.smoke.active{
+    animation:smokeRise 2.5s ease-out forwards;
+}
+
+@keyframes smokeRise{
+    0%{
+        transform:translateY(0) scale(0.7);
+        opacity:0.7;
+    }
+    100%{
+        transform:translateY(-180px) scale(2.5);
+        opacity:0;
+    }
+}
+
+/* Caja de diálogo mejorada */
+.dialogue{
+    background:rgba(255,255,255,.45);
+    backdrop-filter:blur(25px);
+    border-radius:40px;
+    padding:40px;
+    max-width:550px;
+    color:#5a2a4a;
+    text-align:center;
+    box-shadow:0 20px 50px rgba(0,0,0,.18), 
+                0 0 0 1px rgba(255,255,255,.6) inset;
+    border:3px solid rgba(255,255,255,.7);
+}
+
+.character-name{
+    font-family:'Playfair Display',serif;
+    font-size:26px;
+    color:#ff4f9a;
+    margin-bottom:18px;
+    text-shadow:0 2px 8px rgba(255,79,154,.3);
+    font-weight:700;
+}
+
+.dialogue-text,.final-message{
+    font-size:19px;
+    line-height:1.9;
+    min-height:70px;
+    font-weight:500;
+}
+
+/* Efecto typewriter mejorado */
+.typewriter-container{
+    display:inline-block;
+    position:relative;
+}
+
+.typewriter{
+    display:inline;
+    border-right:3px solid #ff4f9a;
+    animation:blink 0.8s step-end infinite;
+}
+
+.typewriter.completed{
+    border-right:none;
+    animation:none;
+}
+
+@keyframes blink{
+    50%{border-color:transparent}
+}
+
+/* Indicador de progreso elegante */
+.progress-indicator{
+    margin-top:25px;
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    align-items:center;
+}
+
+.progress-dot{
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    background:rgba(255,255,255,.5);
+    transition:all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow:0 2px 4px rgba(0,0,0,.1);
+}
+
+.progress-dot.active{
+    background:linear-gradient(135deg,#ff4f9a,#ff8fab);
+    transform:scale(1.4);
+    box-shadow:0 4px 12px rgba(255,79,154,.5);
+}
+
+.progress-dot.completed{
+    background:#c7e9c0;
+    transform:scale(1);
+}
+
+/* Contenedor de botones */
+.button-container{
+    margin-top:35px;
+    width:100%;
+    max-width:450px;
+}
+
+button{
+    width:100%;
+    padding:20px;
+    font-size:19px;
+    font-weight:700;
+    border:none;
+    border-radius:60px;
+    cursor:pointer;
+    transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow:0 6px 20px rgba(0,0,0,.2);
+    position:relative;
+    overflow:hidden;
+}
+
+button::before{
+    content:'';
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:0;
+    height:0;
+    border-radius:50%;
+    background:rgba(255,255,255,.3);
+    transform:translate(-50%, -50%);
+    transition:width 0.6s, height 0.6s;
+}
+
+button:hover::before{
+    width:300px;
+    height:300px;
+}
+
+.yes-button{
+    background:linear-gradient(135deg,#ff6b9d,#ff8fab);
+    color:white;
+    text-shadow:0 2px 4px rgba(0,0,0,.2);
+}
+
+.no-button{
+    margin-top:18px;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    color:white;
+    text-shadow:0 2px 4px rgba(0,0,0,.2);
+}
+
+button:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 30px rgba(0,0,0,.3);
+}
+
+button:active{
+    transform:translateY(-1px) scale(.98);
+}
+
+/* Botón de música mejorado */
+.music-btn{
+    position:fixed;
+    top:20px;
+    right:20px;
+    padding:14px 20px;
+    border-radius:30px;
+    border:none;
+    font-weight:700;
+    cursor:pointer;
+    background:rgba(255,255,255,.95);
+    backdrop-filter:blur(15px);
+    z-index:200;
+    box-shadow:0 6px 20px rgba(0,0,0,.25);
+    transition:all 0.3s ease;
+    font-size:15px;
+}
+
+.music-btn:hover{
+    transform:scale(1.08);
+    box-shadow:0 8px 25px rgba(0,0,0,.3);
+}
+
+/* Botón de reinicio */
+.restart-btn{
+    position:fixed;
+    bottom:30px;
+    left:50%;
+    transform:translateX(-50%);
+    padding:14px 28px;
+    border-radius:30px;
+    border:none;
+    font-weight:700;
+    cursor:pointer;
+    background:rgba(255,255,255,.95);
+    backdrop-filter:blur(15px);
+    z-index:200;
+    box-shadow:0 6px 20px rgba(0,0,0,.25);
+    transition:all 0.3s ease;
+    opacity:0;
+    pointer-events:none;
+    font-size:16px;
+}
+
+.restart-btn.visible{
+    opacity:1;
+    pointer-events:all;
+}
+
+.restart-btn:hover{
+    transform:translateX(-50%) scale(1.08);
+    box-shadow:0 8px 25px rgba(0,0,0,.3);
+}
+
+/* Fecha especial */
+.special-date{
+    margin-top:20px;
+    font-size:15px;
+    color:#ff4f9a;
+    opacity:0.85;
+    font-style:italic;
+    font-weight:600;
+}
+
+/* Responsive mejorado */
+@media (max-width: 600px){
+    .character-container{width:150px}
+    .dialogue{padding:28px;max-width:92%;border-radius:35px}
+    .dialogue-text,.final-message{font-size:17px;min-height:60px}
+    .character-name{font-size:22px}
+    button{font-size:17px;padding:18px}
+    .music-btn{top:15px;right:15px;padding:12px 18px;font-size:14px}
+    .restart-btn{bottom:20px;padding:12px 24px;font-size:15px}
+    .cupid-bow{font-size:30px;right:-30px}
+    .progress-dot{width:10px;height:10px}
+}
+
+@media (max-width: 400px){
+    .character-container{width:130px}
+    .dialogue{padding:24px}
+    .dialogue-text,.final-message{font-size:16px}
+    .character-name{font-size:20px}
+    button{font-size:16px;padding:16px}
+}
+
+@media (max-height: 700px){
+    .character-container{width:140px;margin-bottom:20px}
+    .dialogue{padding:25px}
+    .dialogue-text,.final-message{font-size:17px;min-height:55px}
+    .button-container{margin-top:25px}
+}
+
+@media (max-height: 600px){
+    .character-container{width:120px;margin-bottom:15px}
+    .dialogue{padding:20px}
+    .dialogue-text,.final-message{font-size:16px;min-height:50px}
+    .character-name{font-size:20px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="stars-bg" id="stars"></div>
+<div class="heart-bg"></div>
+
+<audio id="bg-music" loop>
+    <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_7c8c1a34f1.mp3" type="audio/mpeg">
+</audio>
+
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+/* ===== PERSONAJE CUPIDO CON HALO BRILLANTE ===== */
+const Cupido = ({ mood, talking }) => {
+    const skin = '#ffe0d6';
+    const robe = mood === 'happy' ? '#ffffff' : '#dddddd';
+    const gold = '#f5c16c';
+
+    // Animación de boca hablando
+    const [mouthOpen, setMouthOpen] = useState(false);
+
+    useEffect(() => {
+        if (talking) {
+            const interval = setInterval(() => {
+                setMouthOpen(prev => !prev);
+            }, 300);
+            return () => clearInterval(interval);
+        } else {
+            setMouthOpen(false);
+        }
+    }, [talking]);
+
+    return (
+        <svg viewBox="0 0 200 280">
+            {/* Halo brillante con gradiente y respiración */}
+            <defs>
+                <radialGradient id="haloGlow">
+                    <stop offset="0%" stopColor="#fff9e6" stopOpacity="0.9"/>
+                    <stop offset="100%" stopColor="#f5c16c" stopOpacity="0.6"/>
+                </radialGradient>
+                <filter id="glow">
+                    <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                    <feMerge>
+                        <feMergeNode in="coloredBlur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+            </defs>
+            
+            <ellipse cx="100" cy="30" rx="35" ry="10"
+                fill="url(#haloGlow)" 
+                stroke={gold} 
+                strokeWidth="4"
+                filter="url(#glow)"
+                style={{
+                    animation: 'haloBreathe 3s ease-in-out infinite'
+                }}/>
+            
+            <style>{`
+                @keyframes haloBreathe {
+                    0%, 100% { opacity: 0.9; }
+                    50% { opacity: 1; }
+                }
+            `}</style>
+
+            {/* Alas */}
+            <path d="M20 130 Q60 80 80 150 Q50 150 20 130" fill="#fff" opacity="0.9"/>
+            <path d="M180 130 Q140 80 120 150 Q150 150 180 130" fill="#fff" opacity="0.9"/>
+
+            {/* Cara */}
+            <circle cx="100" cy="80" r="38" fill={skin}/>
+            
+            {/* Ojos */}
+            {mood === 'angry' ? (
+                <>
+                    <path d="M82 70 L94 78" stroke="#444" strokeWidth="3" strokeLinecap="round"/>
+                    <path d="M106 78 L118 70" stroke="#444" strokeWidth="3" strokeLinecap="round"/>
+                </>
+            ) : (
+                <>
+                    <circle cx="88" cy="75" r="4" fill="#444"/>
+                    <circle cx="112" cy="75" r="4" fill="#444"/>
+                    {/* Brillo en los ojos */}
+                    <circle cx="90" cy="73" r="1.5" fill="white"/>
+                    <circle cx="114" cy="73" r="1.5" fill="white"/>
+                </>
+            )}
+
+            {/* Boca */}
+            {mood === 'angry' ? (
+                <path d="M85 98 Q100 88 115 98" stroke="#444" strokeWidth="3" fill="none" strokeLinecap="round"/>
+            ) : talking && mouthOpen ? (
+                <ellipse cx="100" cy="93" rx="8" ry="6" fill="#444"/>
+            ) : (
+                <path d="M85 90 Q100 100 115 90" stroke="#444" strokeWidth="3" fill="none" strokeLinecap="round"/>
+            )}
+
+            {/* Cuerpo/túnica */}
+            <path d="M65 120 Q100 110 135 120 V220 Q100 245 65 220 Z" fill={robe}/>
+
+            {/* Emoji en el pecho */}
+            <text x="100" y="210" fontSize="28" textAnchor="middle">
+                {mood === 'happy' ? '💖' : mood === 'angry' ? '💢' : '💖'}
+            </text>
+        </svg>
+    );
+};
+
+/* ===== COMPONENTE TYPEWRITER ===== */
+const TypewriterText = ({ text, speed = 50, onComplete }) => {
+    const [displayedText, setDisplayedText] = useState('');
+    const [completed, setCompleted] = useState(false);
+
+    useEffect(() => {
+        setDisplayedText('');
+        setCompleted(false);
+        let currentIndex = 0;
+
+        const interval = setInterval(() => {
+            if (currentIndex < text.length) {
+                setDisplayedText(text.substring(0, currentIndex + 1));
+                currentIndex++;
+            } else {
+                setCompleted(true);
+                clearInterval(interval);
+                if (onComplete) onComplete();
+            }
+        }, speed);
+
+        return () => clearInterval(interval);
+    }, [text, speed]);
+
+    return (
+        <div className="typewriter-container">
+            <span className={`typewriter ${completed ? 'completed' : ''}`}>
+                {displayedText}
+            </span>
+        </div>
+    );
+};
+
+/* ===== EFECTOS CONFETI MEJORADO ===== */
+const ConfettiEffect = () => {
+    const [confettiPieces, setConfettiPieces] = useState([]);
+
+    useEffect(() => {
+        const pieces = [];
+        const colors = ['#ff6b9d', '#ffd700', '#00d4ff', '#9d50bb', '#ff4f9a', '#4ade80', '#f97316', '#8b5cf6'];
+        const shapes = ['▪', '●', '★', '♥', '◆'];
+        
+        for (let i = 0; i < 100; i++) {
+            pieces.push({
+                id: i,
+                left: Math.random() * 100,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                shape: shapes[Math.floor(Math.random() * shapes.length)],
+                delay: Math.random() * 0.8,
+                duration: 2.5 + Math.random() * 2
+            });
+        }
+        setConfettiPieces(pieces);
+    }, []);
+
+    return (
+        <div className="confetti-container">
+            {confettiPieces.map(piece => (
+                <div
+                    key={piece.id}
+                    className="confetti active"
+                    style={{
+                        left: piece.left + '%',
+                        color: piece.color,
+                        animationDelay: piece.delay + 's',
+                        animationDuration: piece.duration + 's',
+                        fontSize: '16px'
+                    }}
+                >
+                    {piece.shape}
+                </div>
+            ))}
+        </div>
+    );
+};
+
+/* ===== CORAZONES FLOTANTES ===== */
+const FloatingHearts = () => {
+    const [hearts, setHearts] = useState([]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const newHeart = {
+                id: Date.now() + Math.random(),
+                left: 45 + Math.random() * 10,
+                delay: 0
+            };
+            setHearts(prev => [...prev, newHeart]);
+
+            setTimeout(() => {
+                setHearts(prev => prev.filter(h => h.id !== newHeart.id));
+            }, 2500);
+        }, 400);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    return (
+        <div className="floating-hearts">
+            {hearts.map(heart => (
+                <div
+                    key={heart.id}
+                    className="floating-heart active"
+                    style={{
+                        left: heart.left + '%',
+                        animationDelay: heart.delay + 's'
+                    }}
+                >
+                    💕
+                </div>
+            ))}
+        </div>
+    );
+};
+
+/* ===== EFECTOS RAYOS Y HUMO ===== */
+const LightningEffect = () => {
+    const [strikes, setStrikes] = useState([]);
+    const [smokes, setSmokes] = useState([]);
+
+    useEffect(() => {
+        const lightningInterval = setInterval(() => {
+            const newStrike = {
+                id: Date.now() + Math.random(),
+                left: 25 + Math.random() * 50,
+                top: 15 + Math.random() * 30
+            };
+            setStrikes(prev => [...prev, newStrike]);
+
+            setTimeout(() => {
+                setStrikes(prev => prev.filter(s => s.id !== newStrike.id));
+            }, 700);
+        }, 350);
+
+        const smokeInterval = setInterval(() => {
+            const newSmoke = {
+                id: Date.now() + Math.random(),
+                left: 35 + Math.random() * 30,
+                top: 40 + Math.random() * 20
+            };
+            setSmokes(prev => [...prev, newSmoke]);
+
+            setTimeout(() => {
+                setSmokes(prev => prev.filter(s => s.id !== newSmoke.id));
+            }, 2500);
+        }, 600);
+
+        return () => {
+            clearInterval(lightningInterval);
+            clearInterval(smokeInterval);
+        };
+    }, []);
+
+    return (
+        <div className="lightning-container">
+            {strikes.map(strike => (
+                <div
+                    key={strike.id}
+                    className="lightning active"
+                    style={{
+                        left: strike.left + '%',
+                        top: strike.top + '%'
+                    }}
+                >
+                    ⚡
+                </div>
+            ))}
+            {smokes.map(smoke => (
+                <div
+                    key={smoke.id}
+                    className="smoke active"
+                    style={{
+                        left: smoke.left + '%',
+                        top: smoke.top + '%'
+                    }}
+                >
+                    💨
+                </div>
+            ))}
+        </div>
+    );
+};
+
+/* ===== APP PRINCIPAL ===== */
+const ValentineStory = () => {
+    const [scene, setScene] = useState(0);
+    const [mood, setMood] = useState('happy');
+    const [musicOn, setMusicOn] = useState(true);
+    const [showConfetti, setShowConfetti] = useState(false);
+    const [showFloatingHearts, setShowFloatingHearts] = useState(false);
+    const [showLightning, setShowLightning] = useState(false);
+    const [typewriterComplete, setTypewriterComplete] = useState(false);
+    const [showRestart, setShowRestart] = useState(false);
+
+    const scenes = [
+        "Hola soy Cupido, un programador promedio, un simple mensajero que viene a ayudar",
+        "A quien te preguntarás, pues a la persona que te ha pasado esto...",
+        "Esta persona quiere decirte que por más que pase el tiempo...",
+        "Desde el primer hasta el último día...",
+        "Que te quiere mucho y espera que seas su San Valentín 💕"
+    ];
+
+    // Crear estrellas brillantes
+    useEffect(() => {
+        const starsBg = document.getElementById('stars');
+        for(let i=0; i<50; i++){
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsBg.appendChild(star);
+        }
+    }, []);
+
+    // Crear corazones de fondo
+    useEffect(() => {
+        const bg = document.querySelector('.heart-bg');
+        for(let i=0;i<25;i++){
+            const h = document.createElement('div');
+            h.className = 'heart';
+            h.textContent = '💗';
+            h.style.left = Math.random() * 100 + '%';
+            h.style.animationDuration = 10 + Math.random() * 8 + 's';
+            h.style.animationDelay = Math.random() * 5 + 's';
+            bg.appendChild(h);
+        }
+    },[]);
+
+    // Intentar reproducir música al inicio
+    useEffect(() => {
+        const m = document.getElementById('bg-music');
+        if (m) {
+            m.volume = 0.3;
+            m.play().catch(() => {
+                setMusicOn(false);
+            });
+        }
+    }, []);
+
+    // Avance automático de mensajes después del typewriter
+    useEffect(() => {
+        if (scene < scenes.length && typewriterComplete) {
+            const timer = setTimeout(() => {
+                setScene(scene + 1);
+                setTypewriterComplete(false);
+            }, 1200);
+
+            return () => clearTimeout(timer);
+        }
+    }, [scene, typewriterComplete, scenes.length]);
+
+    const toggleMusic = () => {
+        const m = document.getElementById('bg-music');
+        if(!m) return;
+        if(m.paused){ 
+            m.volume = 0.3; 
+            m.play().catch(() => {}); 
+            setMusicOn(true); 
+        }
+        else{ 
+            m.pause(); 
+            setMusicOn(false); 
+        }
+    };
+
+    const sayYes = () => { 
+        setMood('happy'); 
+        setShowConfetti(true);
+        setShowFloatingHearts(true);
+        setShowLightning(false);
+        setScene(scenes.length + 2);
+        setShowRestart(true);
+    };
+    
+    const sayNo = () => { 
+        // Vibración en móviles
+        if (navigator.vibrate) {
+            navigator.vibrate([100, 50, 100, 50, 100]);
+        }
+        
+        setMood('angry'); 
+        setShowLightning(true);
+        setShowConfetti(false);
+        setShowFloatingHearts(false);
+        setScene(scenes.length + 1); 
+    };
+
+    const restart = () => {
+        setScene(0);
+        setMood('happy');
+        setShowConfetti(false);
+        setShowFloatingHearts(false);
+        setShowLightning(false);
+        setTypewriterComplete(false);
+        setShowRestart(false);
+    };
+
+    return (
+        <div className="story-container">
+
+            <button className="music-btn" onClick={toggleMusic}>
+                {musicOn ? '🔊 Música' : '🔇 Música'}
+            </button>
+
+            <button 
+                className={`restart-btn ${showRestart ? 'visible' : ''}`}
+                onClick={restart}
+            >
+                🔄 Volver a ver
+            </button>
+
+            {showConfetti && <ConfettiEffect />}
+            {showFloatingHearts && <FloatingHearts />}
+            {showLightning && <LightningEffect />}
+
+            {scene < scenes.length && (
+                <div className="scene active">
+                    <div className="character-container">
+                        <div className="character breathing">
+                            <Cupido mood="happy" talking={true} />
+                        </div>
+                        {scene === 0 && <div className="cupid-bow">🏹</div>}
+                    </div>
+                    <div className="dialogue">
+                        <div className="character-name">Cupido</div>
+                        <div className="dialogue-text">
+                            <TypewriterText 
+                                text={scenes[scene]} 
+                                speed={40}
+                                onComplete={() => setTypewriterComplete(true)}
+                            />
+                        </div>
+                        <div className="progress-indicator">
+                            {scenes.map((_, index) => (
+                                <div 
+                                    key={index}
+                                    className={`progress-dot ${index === scene ? 'active' : ''} ${index < scene ? 'completed' : ''}`}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {scene === scenes.length && (
+                <div className="scene active">
+                    <div className="character-container">
+                        <div className="character breathing">
+                            <Cupido mood="happy" talking={true} />
+                        </div>
+                    </div>
+                    <div className="dialogue">
+                        <div className="dialogue-text">
+                            ¿Quieres ser mi San Valentín? 🥺💖
+                        </div>
+                        <div className="special-date">14 de Febrero de 2026</div>
+                    </div>
+                    <div className="button-container">
+                        <button className="yes-button" onClick={sayYes}>¡Sí, acepto! 💕</button>
+                        <button className="no-button" onClick={sayNo}>No… 💙</button>
+                    </div>
+                </div>
+            )}
+
+            {scene === scenes.length + 1 && (
+                <div className="scene active">
+                    <div className="character-container">
+                        <div className="character">
+                            <Cupido mood="angry" talking={false} />
+                        </div>
+                    </div>
+                    <div className="dialogue">
+                        <div className="character-name">¡Cupido está enfadado! 😠</div>
+                        <div className="final-message">
+                            ¿Cómo que no…? 💢<br/><br/>
+                            Pero aún puedes arreglarlo 🥺
+                        </div>
+                    </div>
+                    <div className="button-container">
+                        <button className="yes-button" onClick={sayYes}>
+                            Me lo he pensado mejor... ¡Sí quiero! 💖
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {scene === scenes.length + 2 && (
+                <div className="scene active">
+                    <div className="character-container">
+                        <div className="character celebrating">
+                            <Cupido mood="happy" talking={false} />
+                        </div>
+                    </div>
+                    <div className="dialogue">
+                        <div className="character-name">¡Cupido está feliz! 🎉</div>
+                        <div className="final-message">
+                            ¡SÍÍÍÍÍ! 😍💝💕<br/><br/>
+                            ¡Feliz San Valentín!<br/>
+                            ¡Eres lo mejor que me ha pasado! 🌟
+                        </div>
+                        <div className="special-date">Con amor, 14 de Febrero de 2026 💖</div>
+                    </div>
+                </div>
+            )}
+
+        </div>
+    );
+};
+
+ReactDOM.render(<ValentineStory />, document.getElementById('root'));
+</script>
+
+</body>
+</html>
